@@ -2,6 +2,7 @@ package com.anvesh.example;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,7 +19,11 @@ public class FirstController {
     }
 */
     @PostMapping("/post")
-    public String post(String message){//in order to send a message we give it a body message
+    public String post(@RequestBody String message){//in order to send a message we give it a body message
         return "request accepted and message" + message;
+    }
+    @PostMapping("/post-order")
+    public String postOrder(@RequestBody Order order){
+        return "request accepted and message" + order.toString();
     }
 }
