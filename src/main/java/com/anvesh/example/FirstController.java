@@ -2,7 +2,8 @@ package com.anvesh.example;
 
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController//this rest controller is used at the class level and it indicates that the annotated class is used as a rest controller,
+//spring's component scanning mechanism detects these classes and creates the beans of them in the application context
 public class FirstController {
    // @GetMapping("/hello")
     public String sayHello(){
