@@ -1,13 +1,10 @@
 package com.anvesh.example;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class FirstController {
-    @GetMapping("/hello")
+   // @GetMapping("/hello")
     public String sayHello(){
         return "hello from 1st controller";
     }
@@ -30,5 +27,19 @@ public class FirstController {
     @PostMapping("/post-order-record")
     public String postRecord(@RequestBody OrderRecord order){
         return "request accepted and message" + order.toString();
+    }
+    //http
+    //@GetMapping("/hello/{user-name}")
+    public String pathVar(@PathVariable("user-name") String userName){
+        //we would always want to use @PathVariable inside the parameter as this would tell spring that this is the variable that is used in the path
+        return "my value = " + userName;
+    }
+    //http://localhost:8080/hello?param_name=paramvalue&param_name_2=value2
+    @GetMapping("/hello")
+    public String paramVar(
+            @RequestParam("user-name")String userFirstName,
+            @RequestParam("user-lastname")String userLastName
+            ){
+        return "my value = " + userFirstName + " " + userLastName;
     }
 }
