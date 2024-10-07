@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController//this rest controller is used at the class level and it indicates that the annotated class is used as a rest controller,
 //spring's component scanning mechanism detects these classes and creates the beans of them in the application context
 public class FirstController {
-   // @GetMapping("/hello")
+    //@GetMapping("/hello") //sayHello method is already mapped to /hello that ia why we get error for ambiguous mapping
     public String sayHello(){
         return "hello from 1st controller";
     }
