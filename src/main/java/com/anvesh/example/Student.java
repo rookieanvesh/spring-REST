@@ -1,22 +1,23 @@
 package com.anvesh.example;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "T_STUDENT")
 public class Student {
     @Id
+    @GeneratedValue
     private Integer id;
     @Column(name = "c_name")
     private String firstname;
-    @Column(unique = true)
+    @Column(unique = true)//unique lastname only
     private String lastname;
     private String email;
     private int age;
-    @Column
+    @Column(
+            updatable = false,
+            insertable = false
+    )
     private String some_column;
     public Student(){
 

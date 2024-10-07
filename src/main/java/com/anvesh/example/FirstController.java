@@ -1,14 +1,40 @@
 package com.anvesh.example;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController//this rest controller is used at the class level and it indicates that the annotated class is used as a rest controller,
 //spring's component scanning mechanism detects these classes and creates the beans of them in the application context
 public class FirstController {
+
     //@GetMapping("/hello") //sayHello method is already mapped to /hello that ia why we get error for ambiguous mapping
     public String sayHello(){
         return "hello from 1st controller";
     }
+    private final StudentRepository studentRepository;
+    public FirstController(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+    @PostMapping("/students")
+    public Student postStudent(@RequestBody Student student){
+        return studentRepository.save(student);
+    }
+    @GetMapping("/students/{student-id}")
+    public Student findStudentById(@PathVariable("student-id") Integer id){
+        return studentRepository.findById(id)
+                .orElse(new Student());
+    }
+    @GetMapping("/students")
+    public List<Student> findAllStudents(){
+        return studentRepository.findAll();
+    }
+    @GetMapping("/student/{firstname}")
+    public List<Student> findStudentByFirstname(@PathVariable("firstname") String firstname){
+        return studentRepository.findAllByFirstname(firstname);
+    }
+
 /*
     @GetMapping("/hello-2")
     @ResponseStatus(HttpStatus.ACCEPTED)//this is an enum class which has http objects and gives us status codes, by convention we should use this
@@ -43,4 +69,10 @@ public class FirstController {
             ){
         return "my value = " + userFirstName + " " + userLastName;
     }
+    @DeleteMapping("/student/{student-id}")
+    @ResponseStatus(HttpStatus.OK)
+    void deleteStudent(@PathVariable("student-id") Integer id){
+        studentRepository.deleteById(id);
+    }
+
 }
