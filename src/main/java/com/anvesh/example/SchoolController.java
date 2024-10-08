@@ -15,9 +15,14 @@ public class SchoolController {
         this.schoolRepository = schoolRepository;
     }
 
-    @PostMapping("/schools")
-    public School create(@RequestBody School school){
-        return schoolRepository.save(school);
+    @PostMapping("/schools") //we changed this from getting all the information about the school and its students to just getting the info about the school by using SchoolDto
+    public SchoolDto create(@RequestBody SchoolDto dto){
+        var school = toSchool(dto);//converting school_dto to school entity
+        var savedSchool = schoolRepository.save(school);//saving to database with all the fields
+        return dto;//just return the dto
+    }
+    public School toSchool(SchoolDto dto){
+        return new School(dto.name());
     }
     @GetMapping("/schools")
     public List<School> findAll(){
