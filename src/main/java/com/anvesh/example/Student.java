@@ -1,5 +1,6 @@
 package com.anvesh.example;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -23,8 +24,35 @@ public class Student {
     cascade = CascadeType.ALL)
     private StudentProfile studentProfile;
 
-    @OneToOne
+    @ManyToOne //means many students to one school
+    @JoinColumn(name = "school_id")
+    @JsonBackReference
     private School school;
+
+    public School getSchool() {
+        return school;
+    }
+
+    public void setSchool(School school) {
+        this.school = school;
+    }
+
+    public String getSome_column() {
+        return some_column;
+    }
+
+    public void setSome_column(String some_column) {
+        this.some_column = some_column;
+    }
+
+    public StudentProfile getStudentProfile() {
+        return studentProfile;
+    }
+
+    public void setStudentProfile(StudentProfile studentProfile) {
+        this.studentProfile = studentProfile;
+    }
+
     public Student(){
 
     }
