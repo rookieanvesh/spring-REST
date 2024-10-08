@@ -1,5 +1,7 @@
-package com.anvesh.example;
+package com.anvesh.example.student;
 
+import com.anvesh.example.Order;
+import com.anvesh.example.OrderRecord;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,22 +10,25 @@ import java.util.List;
 @RestController//this rest controller is used at the class level and it indicates that the annotated class is used as a rest controller,
 //spring's component scanning mechanism detects these classes and creates the beans of them in the application context
 public class FirstController {
-
     //@GetMapping("/hello") //sayHello method is already mapped to /hello that ia why we get error for ambiguous mapping
     public String sayHello(){
         return "hello from 1st controller";
     }
     private final StudentRepository studentRepository;
-    public FirstController(StudentRepository studentRepository) {
+    private StudentService studentService;
+    private final StudentMapper studentMapper;
+    public FirstController(StudentMapper studentMapper, StudentRepository studentRepository) {
+        this.studentMapper = studentMapper;
         this.studentRepository = studentRepository;
     }
     @PostMapping("/students") //here we return StudentResponseDto so that we dont expose extra info
     public StudentResponseDto postStudent(@RequestBody StudentDto dto){
-        var student = toStudent(dto);
-        var savedStudent = studentRepository.save(student);
+        var student = studentMapper.toStudent(dto);
+        var savedStudent = studentService.saveStudent(dto);
         //returning the dto with the aggregated entities, we only display the entities that are necessary
-        return toStudentResponseDto(savedStudent);
+        return studentMapper.toStudentResponseDto(student);
     }//dto to entity
+/*
     private Student toStudent(StudentDto dto){
         var student = new Student();
         student.setFirstname(dto.firstname());
@@ -41,18 +46,18 @@ public class FirstController {
                 student.getEmail()
         );
     }
+*/
     @GetMapping("/students/{student-id}")
-    public Student findStudentById(@PathVariable("student-id") Integer id){
-        return studentRepository.findById(id)
-                .orElse(new Student());
+    public StudentResponseDto findStudentById(@PathVariable("student-id") Integer id){
+        return studentService.findStudentById(id);
     }
     @GetMapping("/students")
-    public List<Student> findAllStudents(){
-        return studentRepository.findAll();
+    public List<StudentResponseDto> findAllStudents(){
+        return studentService.findAllStudent();
     }
     @GetMapping("/student/{firstname}")
-    public List<Student> findStudentByFirstname(@PathVariable("firstname") String firstname){
-        return studentRepository.findAllByFirstname(firstname);
+    public List<StudentResponseDto> findStudentByFirstname(@PathVariable("firstname") String firstname){
+        return studentService.findStudentByFirstname(firstname);
     }
 
 /*
@@ -92,7 +97,7 @@ public class FirstController {
     @DeleteMapping("/student/{student-id}")
     @ResponseStatus(HttpStatus.OK)
     void deleteStudent(@PathVariable("student-id") Integer id){
-        studentRepository.deleteById(id);
+        studentService.deleteStudent(id);
     }
 
 }

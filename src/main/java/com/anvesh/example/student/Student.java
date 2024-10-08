@@ -1,5 +1,7 @@
-package com.anvesh.example;
+package com.anvesh.example.student;
 
+import com.anvesh.example.school.School;
+import com.anvesh.example.studentprofile.StudentProfile;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 

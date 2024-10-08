@@ -1,5 +1,6 @@
-package com.anvesh.example;
+package com.anvesh.example.studentprofile;
 
+import com.anvesh.example.student.Student;
 import jakarta.persistence.*;
 
 @Entity

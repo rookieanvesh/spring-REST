@@ -1,5 +1,6 @@
-package com.anvesh.example;
+package com.anvesh.example.school;
 
+import com.anvesh.example.student.Student;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

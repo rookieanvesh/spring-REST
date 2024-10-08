@@ -1,4 +1,4 @@
-package com.anvesh.example;
+package com.anvesh.example.school;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,23 +9,24 @@ import java.util.List;
 
 @RestController
 public class SchoolController {
-    private final SchoolRepository schoolRepository;
-
-    public SchoolController(SchoolRepository schoolRepository) {
-        this.schoolRepository = schoolRepository;
-    }
-
+//    private final SchoolRepository schoolRepository;
+//
+//    public SchoolController(SchoolRepository schoolRepository) {
+//        this.schoolRepository = schoolRepository;
+//    }
+    private SchoolService schoolService;
     @PostMapping("/schools") //we changed this from getting all the information about the school and its students to just getting the info about the school by using SchoolDto
     public SchoolDto create(@RequestBody SchoolDto dto){
-        var school = toSchool(dto);//converting school_dto to school entity
-        var savedSchool = schoolRepository.save(school);//saving to database with all the fields
-        return dto;//just return the dto
+        return schoolService.create(dto);
     }
-    public School toSchool(SchoolDto dto){
-        return new School(dto.name());
-    }
+//    public School toSchool(SchoolDto dto){
+//        return new School(dto.name());
+//    }
+//    public SchoolDto schoolDto(School school){
+//        return new SchoolDto(school.getName());
+//    }
     @GetMapping("/schools")
-    public List<School> findAll(){
-        return schoolRepository.findAll();
+    public List<SchoolDto> findAll(){
+        return schoolService.findAllSchools();
     }
 }

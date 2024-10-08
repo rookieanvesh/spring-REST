@@ -1,4 +1,4 @@
-package com.anvesh.example;
+package com.anvesh.example.student;
 
 public record StudentDto(
         String firstname,

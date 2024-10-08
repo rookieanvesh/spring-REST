@@ -1,4 +1,4 @@
-package com.anvesh.example;
+package com.anvesh.example.school;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
