@@ -19,6 +19,12 @@ public class Student {
             insertable = false
     )
     private String some_column;
+    @OneToOne(mappedBy = "student",
+    cascade = CascadeType.ALL)
+    private StudentProfile studentProfile;
+
+    @OneToOne
+    private School school;
     public Student(){
 
     }
