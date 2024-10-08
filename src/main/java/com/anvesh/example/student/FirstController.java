@@ -2,9 +2,14 @@ package com.anvesh.example.student;
 
 import com.anvesh.example.Order;
 import com.anvesh.example.OrderRecord;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController//this rest controller is used at the class level and it indicates that the annotated class is used as a rest controller,
@@ -17,12 +22,15 @@ public class FirstController {
     private final StudentRepository studentRepository;
     private StudentService studentService;
     private final StudentMapper studentMapper;
-    public FirstController(StudentMapper studentMapper, StudentRepository studentRepository) {
-        this.studentMapper = studentMapper;
+
+    public FirstController(StudentRepository studentRepository, StudentService studentService, StudentMapper studentMapper) {
         this.studentRepository = studentRepository;
+        this.studentService = studentService;
+        this.studentMapper = studentMapper;
     }
+
     @PostMapping("/students") //here we return StudentResponseDto so that we dont expose extra info
-    public StudentResponseDto postStudent(@RequestBody StudentDto dto){
+    public StudentResponseDto postStudent(@Valid @RequestBody StudentDto dto){
         var student = studentMapper.toStudent(dto);
         var savedStudent = studentService.saveStudent(dto);
         //returning the dto with the aggregated entities, we only display the entities that are necessary
@@ -98,6 +106,19 @@ public class FirstController {
     @ResponseStatus(HttpStatus.OK)
     void deleteStudent(@PathVariable("student-id") Integer id){
         studentService.deleteStudent(id);
+    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException exp
+    ){
+        var errors = new HashMap<String,String>();
+        exp.getBindingResult().getAllErrors() //these errors are coming from the annotations use in the dto class which cannot be left empty
+                .forEach(error -> {//for each element we want to extract the field name and the error message
+                    var fieldName = ((FieldError)error).getField();
+                    var errorMessage = error.getDefaultMessage();
+                    errors.put(fieldName,errorMessage); //we gather all the error messages
+                });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -15,6 +15,11 @@ public class SchoolController {
 //        this.schoolRepository = schoolRepository;
 //    }
     private SchoolService schoolService;
+
+    public SchoolController(SchoolService schoolService) {
+        this.schoolService = schoolService;
+    }
+
     @PostMapping("/schools") //we changed this from getting all the information about the school and its students to just getting the info about the school by using SchoolDto
     public SchoolDto create(@RequestBody SchoolDto dto){
         return schoolService.create(dto);
